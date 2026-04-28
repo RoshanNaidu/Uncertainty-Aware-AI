@@ -1,12 +1,3 @@
----
-title: Uncertainty Aware AI
-emoji: 🚀
-colorFrom: indigo
-colorTo: purple
-sdk: docker
-pinned: false
----
-
 # AI That Knows When It's Wrong
 
 A complete, publication-ready Deep Ensemble pipeline for uncertainty quantification using CIFAR-10, paired with a modern Next.js web application.
