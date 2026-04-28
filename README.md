@@ -13,7 +13,7 @@ A complete, publication-ready Deep Ensemble pipeline for uncertainty quantificat
 
 [Full Walkthrough Documentation](brain/a8720bf5-0565-40cc-9875-b5adeac35b2d/walkthrough.md)
 
-This project trains $M=5$ WideResNet-28-10 models entirely from scratch to create a Deep Ensemble. The backend framework evaluates the ensemble's mean prediction probability alongside measures of Total Uncertainty (Predictive Entropy) and Epistemic Uncertainty (Mutual Information — isolating model disagreement). 
+This project trains $M=3$ WideResNet-28-10 models entirely from scratch to create a Deep Ensemble. The backend framework evaluates the ensemble's mean prediction probability alongside measures of Total Uncertainty (Predictive Entropy) and Epistemic Uncertainty (Mutual Information — isolating model disagreement). 
 
 Out-of-Distribution (OOD) testing takes place using CIFAR-100 to show the model generating appropriately high uncertainty when evaluating classes it hasn't seen before.
 
@@ -35,8 +35,8 @@ pip install -r requirements.txt
 
 #### Train the Ensemble (Takes substantial time)
 ```bash
-# Full training of 5 models on CIFAR-10
-python train.py --epochs 200 --ensemble-size 5
+# Full training of 3 models on CIFAR-10
+python train.py --epochs 200 --ensemble-size 3
 
 # Sanity check training (1 epoch)
 python train.py --epochs 1 --ensemble-size 1
@@ -66,7 +66,7 @@ Visit [http://localhost:3000](http://localhost:3000).
 ### Backend (Render or Railway)
 - Use the included `requirements.txt`.
 - Set the start command to: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-- *Note:* Each WideResNet-28-10 comprises ~36.5M parameters. Ensure the deploy tier provides roughly 4GB of RAM to comfortably load all 5 models concurrently.
+- *Note:* Each WideResNet-28-10 comprises ~36.5M parameters. Ensure the deploy tier provides roughly 4GB of RAM to comfortably load all 3 models concurrently.
 
 ### Frontend (Vercel)
 - Push repository to GitHub and link to Vercel.

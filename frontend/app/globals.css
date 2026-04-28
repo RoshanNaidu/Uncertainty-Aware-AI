@@ -133,3 +133,29 @@ body {
   border-color: rgba(99, 102, 241, 0.6);
   background: rgba(99, 102, 241, 0.05);
 }
+
+/* Grad-CAM shimmer loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.gradcam-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Grad-CAM image glow */
+.gradcam-glow {
+  transition: box-shadow 0.3s ease;
+}
+.gradcam-glow:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.25), 0 0 60px rgba(168, 85, 247, 0.15);
+}
+

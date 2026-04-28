@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import ImageUpload from "./components/ImageUpload";
 import PredictionDisplay from "./components/PredictionDisplay";
 import TopProbabilities from "./components/TopProbabilities";
 import EnsembleChart from "./components/EnsembleChart";
+import GradCAMDisplay from "./components/GradCAMDisplay";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
 
@@ -12,11 +13,43 @@ export default function Home() {
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [gradcamResult, setGradcamResult] = useState(null);
+  const [gradcamLoading, setGradcamLoading] = useState(false);
+  const lastFileRef = useRef(null);
+
+  const fetchGradCAM = useCallback(async (file, targetIndex) => {
+    setGradcamLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("target_class", targetIndex.toString());
+
+      const response = await fetch(`${API_URL}/gradcam`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGradcamResult(data);
+      } else {
+        console.warn("Grad-CAM request failed:", response.status);
+        setGradcamResult(null);
+      }
+    } catch (err) {
+      console.warn("Grad-CAM request error:", err);
+      setGradcamResult(null);
+    } finally {
+      setGradcamLoading(false);
+    }
+  }, []);
 
   const handleUpload = useCallback(async (file) => {
     setIsLoading(true);
     setError(null);
     setResult(null);
+    setGradcamResult(null);
+    lastFileRef.current = file;
 
     try {
       const formData = new FormData();
@@ -34,12 +67,15 @@ export default function Home() {
 
       const data = await response.json();
       setResult(data);
+
+      // Trigger Grad-CAM after prediction succeeds
+      fetchGradCAM(file, data.predicted_index);
     } catch (err) {
       setError(err.message || "Failed to get prediction");
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [fetchGradCAM]);
 
   return (
     <div className="gradient-bg min-h-screen">
@@ -62,7 +98,7 @@ export default function Home() {
           </div>
           <div className="hidden sm:flex items-center gap-2 text-xs text-white/30">
             <span className="px-2 py-1 rounded-md bg-white/[0.04] border border-white/[0.06]">
-              M = 5 models
+              M = 3 models
             </span>
             <span className="px-2 py-1 rounded-md bg-white/[0.04] border border-white/[0.06]">
               36.5M params each
@@ -79,7 +115,7 @@ export default function Home() {
             Uncertainty-Aware Predictions
           </h2>
           <p className="text-white/40 max-w-lg mx-auto text-sm">
-            Upload any image to see how a deep ensemble of 5 independently
+            Upload any image to see how a deep ensemble of 3 independently
             trained neural networks quantifies its own uncertainty.
           </p>
         </div>
@@ -99,7 +135,7 @@ export default function Home() {
                   <span className="text-indigo-400 font-mono">1.</span>
                   <span>
                     Your image is resized to 32×32 and fed through{" "}
-                    <strong className="text-white/60">5 independent</strong>{" "}
+                    <strong className="text-white/60">3 independent</strong>{" "}
                     WideResNet-28-10 models
                   </span>
                 </div>
@@ -173,6 +209,10 @@ export default function Home() {
                   <PredictionDisplay result={result} />
                   <TopProbabilities top5={result.top5} />
                 </div>
+                <GradCAMDisplay
+                  gradcamResult={gradcamResult}
+                  isLoading={gradcamLoading}
+                />
                 <EnsembleChart
                   ensemblePredictions={result.ensemble_predictions}
                   predictedIndex={result.predicted_index}
@@ -208,7 +248,7 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <span>PyTorch + FastAPI + Next.js</span>
             <span>•</span>
-            <span>M = 5 ensemble members</span>
+            <span>M = 3 ensemble members</span>
           </div>
         </div>
       </footer>
