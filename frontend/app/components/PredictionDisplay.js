@@ -99,11 +99,11 @@ function MetricCard({ label, value, sublabel, level }) {
 function SmartFeedback({ confidence, entropy, mi }) {
   let message, emoji, borderColor;
 
-  if (confidence >= 0.8 && entropy < 0.5) {
+  if (confidence >= 0.7) {
     message = "Model is very confident in this prediction";
     emoji = "✅";
     borderColor = "border-green-500/30 bg-green-500/5";
-  } else if (confidence >= 0.5) {
+  } else if (confidence >= 0.4) {
     message = "Model is moderately confident — some uncertainty present";
     emoji = "⚠️";
     borderColor = "border-yellow-500/30 bg-yellow-500/5";
