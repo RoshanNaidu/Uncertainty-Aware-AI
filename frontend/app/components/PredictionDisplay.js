@@ -21,7 +21,11 @@ export default function PredictionDisplay({ result }) {
   return (
     <div className="glass-card p-6 animate-fade-in">
       <h2 className="text-lg font-semibold mb-5 flex items-center gap-2">
-        <span className="text-2xl">🎯</span>
+        <div className="w-6 h-6 rounded bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+          <svg className="w-3.5 h-3.5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
         Prediction
       </h2>
 
@@ -101,16 +105,16 @@ function SmartFeedback({ confidence, entropy, mi }) {
 
   if (confidence >= 0.7) {
     message = "Model is very confident in this prediction";
-    emoji = "✅";
+    emoji = "check";
     borderColor = "border-green-500/30 bg-green-500/5";
   } else if (confidence >= 0.4) {
     message = "Model is moderately confident — some uncertainty present";
-    emoji = "⚠️";
+    emoji = "warn";
     borderColor = "border-yellow-500/30 bg-yellow-500/5";
   } else {
     message =
       "Model is uncertain — this may be an out-of-distribution sample";
-    emoji = "🔴";
+    emoji = "alert";
     borderColor = "border-red-500/30 bg-red-500/5";
   }
 
@@ -118,7 +122,21 @@ function SmartFeedback({ confidence, entropy, mi }) {
     <div
       className={`rounded-lg border px-4 py-3 flex items-center gap-3 text-sm ${borderColor} animate-fade-in`}
     >
-      <span className="text-xl">{emoji}</span>
+      <span className="text-xl flex-shrink-0">
+        {emoji === "check" ? (
+          <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        ) : emoji === "warn" ? (
+          <svg className="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+        ) : (
+          <svg className="w-5 h-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        )}
+      </span>
       <span className="text-white/70">{message}</span>
     </div>
   );

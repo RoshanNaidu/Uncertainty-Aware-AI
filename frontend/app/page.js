@@ -1,11 +1,18 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import dynamic from "next/dynamic";
 import ImageUpload from "./components/ImageUpload";
 import PredictionDisplay from "./components/PredictionDisplay";
 import TopProbabilities from "./components/TopProbabilities";
 import EnsembleChart from "./components/EnsembleChart";
 import GradCAMDisplay from "./components/GradCAMDisplay";
+import ValidationInsight from "./components/ValidationInsight";
+
+const ParticleBackground = dynamic(
+  () => import("./components/ParticleBackground"),
+  { ssr: false }
+);
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
 
@@ -78,13 +85,17 @@ export default function Home() {
   }, [fetchGradCAM]);
 
   return (
-    <div className="gradient-bg min-h-screen">
+    <div className="app-shell min-h-screen">
+      <ParticleBackground />
+
       {/* Header */}
-      <header className="border-b border-white/[0.06] bg-black/20 backdrop-blur-sm sticky top-0 z-50">
+      <header className="header-bar border-b border-white/[0.06] bg-black/30 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-lg">
-              🧠
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
             </div>
             <div>
               <h1 className="text-lg font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
@@ -108,7 +119,7 @@ export default function Home() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <main className="content-layer max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Hero text */}
         <div className="text-center mb-8">
           <h2 className="text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -128,7 +139,12 @@ export default function Home() {
             {/* How it works */}
             <div className="glass-card p-5">
               <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                <span>💡</span> How It Works
+                <div className="w-5 h-5 rounded bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                  <svg className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zm4.657 2.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM4 11a1 1 0 100-2H3a1 1 0 000 2h1zm7 5a1 1 0 01-1 1v1a1 1 0 102 0v-1a1 1 0 01-1-1zm-4.95-1.536a1 1 0 00-1.414 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707zm9.9 0l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zM10 6a4 4 0 100 8 4 4 0 000-8z" />
+                  </svg>
+                </div>
+                How It Works
               </h3>
               <div className="space-y-2.5 text-xs text-white/40">
                 <div className="flex gap-2">
@@ -185,7 +201,11 @@ export default function Home() {
             {error && (
               <div className="glass-card p-6 border border-red-500/20 bg-red-500/5 animate-fade-in">
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">❌</span>
+                  <div className="w-8 h-8 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-red-400">
                       Prediction Failed
@@ -217,13 +237,18 @@ export default function Home() {
                   ensemblePredictions={result.ensemble_predictions}
                   predictedIndex={result.predicted_index}
                 />
+                <ValidationInsight result={result} />
               </>
             )}
 
             {/* Empty state */}
             {!result && !isLoading && !error && (
               <div className="glass-card p-16 flex flex-col items-center gap-4 text-center">
-                <div className="text-5xl opacity-20">🔬</div>
+                <div className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                  </svg>
+                </div>
                 <p className="text-white/30 text-sm">
                   Upload an image to see uncertainty-aware predictions
                 </p>
@@ -239,15 +264,15 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.06] mt-12 py-6">
+      <footer className="content-layer border-t border-white/[0.06] mt-12 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/20">
           <p>
-            Deep Ensemble UQ • WideResNet-28-10 • CIFAR-10 In-Distribution •
+            Deep Ensemble UQ · WideResNet-28-10 · CIFAR-10 In-Distribution ·
             CIFAR-100 OOD
           </p>
           <div className="flex items-center gap-4">
             <span>PyTorch + FastAPI + Next.js</span>
-            <span>•</span>
+            <span>·</span>
             <span>M = 3 ensemble members</span>
           </div>
         </div>

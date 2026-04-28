@@ -19,7 +19,11 @@ export default function TopProbabilities({ top5 }) {
   return (
     <div className="glass-card p-6 animate-fade-in">
       <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-        <span className="text-2xl">📊</span>
+        <div className="w-6 h-6 rounded bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+          <svg className="w-3.5 h-3.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M16 8v8m-4-5v5m-4-2v2m12-15a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h12z" />
+          </svg>
+        </div>
         Top-5 Probabilities
       </h2>
 

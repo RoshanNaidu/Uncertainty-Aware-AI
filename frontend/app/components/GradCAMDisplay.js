@@ -5,7 +5,12 @@ export default function GradCAMDisplay({ gradcamResult, isLoading }) {
     return (
       <div className="glass-card p-6 animate-fade-in">
         <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <span className="text-2xl">🔥</span>
+          <div className="w-6 h-6 rounded bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+            <svg className="w-3.5 h-3.5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+            </svg>
+          </div>
           Grad-CAM Visualization
         </h2>
         <div className="flex flex-col items-center gap-4 py-8">
@@ -23,7 +28,12 @@ export default function GradCAMDisplay({ gradcamResult, isLoading }) {
   return (
     <div className="glass-card p-6 animate-fade-in">
       <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-        <span className="text-2xl">🔥</span>
+        <div className="w-6 h-6 rounded bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+          <svg className="w-3.5 h-3.5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+          </svg>
+        </div>
         Grad-CAM Visualization
       </h2>
 
@@ -70,7 +80,11 @@ export default function GradCAMDisplay({ gradcamResult, isLoading }) {
 
           {/* Info pill */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-xs text-white/40">
-            <span>🧠</span>
+            <div className="w-4 h-4 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
+              <svg className="w-2.5 h-2.5 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
             <span>
               Generated from <strong className="text-white/60">Model 1</strong> (ensemble member)
               using the final convolutional layer
