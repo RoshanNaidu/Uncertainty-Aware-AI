@@ -2,7 +2,7 @@
 
 A complete, publication-ready Deep Ensemble pipeline for uncertainty quantification using CIFAR-10, paired with a modern Next.js web application.
 
-This project trains $M=3$ WideResNet-28-10 models entirely from scratch to create a Deep Ensemble. The backend framework evaluates the ensemble's mean prediction probability alongside measures of Total Uncertainty (Predictive Entropy) and Epistemic Uncertainty (Mutual Information — isolating model disagreement). 
+This project trains $M=3$ WideResNet-16-2 models entirely from scratch to create a Deep Ensemble. The backend framework evaluates the ensemble's mean prediction probability alongside measures of Total Uncertainty (Predictive Entropy) and Epistemic Uncertainty (Mutual Information — isolating model disagreement). 
 
 Out-of-Distribution (OOD) testing takes place using CIFAR-100 to show the model generating appropriately high uncertainty when evaluating classes it hasn't seen before.
 
